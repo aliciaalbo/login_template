@@ -1,6 +1,11 @@
 import React, { useState } from 'react';
+import {
+  FormControl,
+  Form,
+  Card,
+} from "react-bootstrap";
 
-function LoginModal({ onClose }) {
+function LoginModal(props) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
@@ -12,28 +17,51 @@ function LoginModal({ onClose }) {
     setPassword(event.target.value);
   };
 
-  const handleSubmit = (event) => {
+  const logUserIn = (event) => {
     event.preventDefault();
-    // TODO: Implement login logic here
-    onClose();
+    const userDetails = {
+      "username": username,
+      "password": password
+    };
+
+    fetch(`/login`, {
+      method: "post",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(userDetails)
+    })
+      .then((response) => response.json())
+      .then(data => {
+        if ('error' in data) {
+          console.log('Login backend error: ' + data['error']);
+        } else {
+          // localStorage.setItem("userId", data["user_id"])
+          // localStorage.setItem("username", data["username"])
+
+          props.setUserLoggedIn({ userId: data["user_id"], username: data["username"] });
+        }
+      })
+      .catch(error => console.log("Login Error: " + error));
+    props.onClose();
   };
 
   return (
-    <div className="modal">
-      <div className="modal-content">
-        <span className="close" onClick={onClose}>&times;</span>
-        <h2>Login</h2>
-        <form onSubmit={handleSubmit}>
-          <label htmlFor="username">Username:</label>
-          <input type="text" id="username" value={username} onChange={handleUsernameChange} />
-
-          <label htmlFor="password">Password:</label>
-          <input type="password" id="password" value={password} onChange={handlePasswordChange} />
-
-          <button type="submit">Login</button>
-        </form>
-      </div>
-    </div>
+    <Card style={{ padding: "2rem" }}>
+      <h3>Sign In</h3>
+      <Form action="/login" onSubmit={logUserIn}>
+        <p>
+          <FormControl type="text" id="login-username" name="username" placeholder="Your username/email" onChange={handleUsernameChange} required />
+        </p>
+        <p>
+          <FormControl type="password" id="login-password" name="password" placeholder="Your password" onChange={handlePasswordChange} required />
+        </p>
+        <p>
+          <button className="btn btn-primary" type="submit">Login</button>
+        </p>
+      </Form>
+    </Card>
   );
 }
 
