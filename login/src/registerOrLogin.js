@@ -1,6 +1,7 @@
 import React from 'react'
-import Login from "./login";
-// import CreateAccount from "./createAccount";
+import { Container, Row, Col, Button } from "react-bootstrap";
+import LoginModal from "./loginModal";
+import CreateAccount from "./createAccount";
 
 function RegisterOrLogin(props) {
     const [show, setShow] = React.useState(false);
@@ -16,8 +17,16 @@ function RegisterOrLogin(props) {
             </div>
 
             {show && (
-                <Login userLoggedIn={props.userLoggedIn} setUserLoggedIn={props.setUserLoggedIn} />
-                {/* <CreateAccount userLoggedIn={props.userLoggedIn} setUserLoggedIn={props.setUserLoggedIn} /> */}
+                <Container>
+                    <Row>
+                        <Col>
+                            <LoginModal userLoggedIn={props.userLoggedIn} setUserLoggedIn={props.setUserLoggedIn} />
+                        </Col>
+                        <Col>
+                            <CreateAccount userLoggedIn={props.userLoggedIn} setUserLoggedIn={props.setUserLoggedIn} />
+                        </Col>
+                    </Row>
+                </Container>
             )}
         </>
     );
