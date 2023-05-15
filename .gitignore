@@ -8,6 +8,7 @@
 secrets.sh
 secrets.py
 secret.py
+py_secrets.py
 /env
 __pycache__/ 
 *.sql

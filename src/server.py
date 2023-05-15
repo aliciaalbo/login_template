@@ -1,10 +1,11 @@
-from flask import (Flask)
+from flask import (Flask, request, redirect, session, render_template, jsonify)
 from model import connect_to_db
-import secret
+import user.user_functions as user_functions
+import py_secrets
 
 
 app = Flask(__name__)
-app.secret_key = secret.secret_key
+app.secret_key = py_secrets.secret_key
 
 connect_to_db(app)
 
@@ -46,8 +47,8 @@ def signup():
 @app.route("/logout", methods=["GET", "POST"])
 def log_out_user():
     """Log a user out and show them they were successful or not."""
-    user_id = session.pop("user_id")
-    return render_template('login.html', success="Success! You were logged out.")
+    session.clear()
+    return jsonify({"success": 'You have been logged out.'})
 
 
 if __name__ == '__main__':
