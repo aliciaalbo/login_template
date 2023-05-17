@@ -10,6 +10,7 @@ secrets.py
 secret.py
 py_secrets.py
 /env
+/python/env
 __pycache__/ 
 *.sql
 *.tgz
@@ -18,3 +19,5 @@ __pycache__/
 *.log
 *.bak
 *.save
+*.swp
+/react/package-lock.json
