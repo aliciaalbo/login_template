@@ -1,25 +1,26 @@
-import React, { useState } from "react";
+import React, { useState } from "react"
 import {
     Card,
     Form,
     FormControl,
     Button
-} from "react-bootstrap";
+} from "react-bootstrap"
+import { JSON_FETCH_HEADERS } from './constants'
 
 function RegisterUser(props) {
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
+    const [username, setUsername] = useState('')
+    const [password, setPassword] = useState('')
 
     const handleUsernameChange = (event) => {
-        setUsername(event.target.value);
-    };
+        setUsername(event.target.value)
+    }
 
     const handlePasswordChange = (event) => {
-        setPassword(event.target.value);
-    };
+        setPassword(event.target.value)
+    }
 
     const createNewUser = (e) => {
-        e.preventDefault();
+        e.preventDefault()
         const userDetails = {
             "username": username,
             "password": password
@@ -27,24 +28,21 @@ function RegisterUser(props) {
 
         fetch(`/api/register_user`, {
             method: "post",
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
+            headers: JSON_FETCH_HEADERS,
             body: JSON.stringify(userDetails)
         })
             .then((response) => response.json())
             .then(data => {
                 if ("error" in data) {
-                    alert(data["error"]);
+                    alert(data["error"])
                 } else {
-                    props.setUserLoggedIn({ userId: data["user_id"], username: data["username"] });
-                    alert(data["success"]);
+                    props.setUserLoggedIn({ userId: data["user_id"], username: data["username"] })
+                    alert(data["success"])
                 }
             })
-            .catch(error => console.log("Login Error: " + error));
-        props.onClose();
-    };
+            .catch(error => alert("Login Error: " + error))
+        props.onClose()
+    }
 
     return (
         <Card style={{ padding: "2rem" }}>
@@ -60,8 +58,8 @@ function RegisterUser(props) {
                 <Button className="btn btn-primary" type="submit">Register</Button>
             </Form>
         </Card>
-    );
+    )
 }
 
 
-export default RegisterUser;
+export default RegisterUser

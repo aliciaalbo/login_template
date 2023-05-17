@@ -1,18 +1,18 @@
 import React from 'react'
-import { Container, Row, Col, Button } from "react-bootstrap";
-import LoginUser from "./loginUser";
-import RegisterUser from "./registerUser";
+import { Container, Row, Col, Button } from "react-bootstrap"
+import LoginUser from "./loginUser"
+import RegisterUser from "./registerUser"
 
 function RegisterOrLogin(props) {
-    const [show, setShow] = React.useState(false);
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
+    const [show, setShow] = React.useState(false)
+    const handleClose = () => setShow(false)
+    const handleShow = () => setShow(true)
 
     return (
         <>
             <div className="ml-auto">
                 <Button className="float-right" variant="primary" onClick={handleShow}>
-                    Sign In / Sign Up
+                    Login / Register
                 </Button>
             </div>
 
@@ -29,7 +29,7 @@ function RegisterOrLogin(props) {
                 </Container>
             )}
         </>
-    );
+    )
 }
 
 export default RegisterOrLogin

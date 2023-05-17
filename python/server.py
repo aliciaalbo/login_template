@@ -12,8 +12,8 @@ connect_to_db(app)
 
 @app.route("/api/login_user", methods=["POST"])
 def login_user():
-    username = request.form.get("username")
-    password = request.form.get("password")
+    username = request.json.get("username")
+    password = request.json.get("password")
     if username is None and password is None:
         return jsonify({"error": "No username or password submitted."})
     if username is None or len(username) < 3 or password is None or len(password) < 6:
@@ -34,8 +34,8 @@ def login_user():
 
 @app.route("/api/register_user", methods=['POST'])
 def register_user():
-    username = request.form.get('username')
-    password = request.form.get('password')
+    username = request.json.get('username')
+    password = request.json.get('password')
     if username is None or len(username) < 4 or password is None or len(password) < 6:
         return jsonify({"error": "Username or password is missing or too short."})
     if len(username) > 50:
@@ -70,10 +70,14 @@ def update_user():
         return jsonify({"error": "Not current logged in."})
 
 
-@app.route("/api/logout", methods=["GET", "POST"])
-def log_out_user():
-    session.clear()
-    return jsonify({"success": "You have been logged out."})
+@app.route("/api/logout_user", methods=["POST"])
+def logout_user():
+    user_id = request.json.get('userId')
+    if user_id is not None and session.get("user_id") == user_id:
+        session.clear()
+        return jsonify({"success": "You have been logged out."})
+    else:
+        return jsonify({"error": "Not current logged in."})
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=True)

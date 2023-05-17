@@ -10,9 +10,19 @@ class User(db.Model):
     __tablename__ = "users"
 
     user_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    username = db.Column(db.String)
-    email = db.Column(db.String)
-    password_hash = db.Column(db.String)
+    username = db.Column(db.String(50), nullable=False, unique=True)
+    email = db.Column(db.String(255))
+    password_hash = db.Column(db.String(128))
+
+    def __repr__(self):
+        return f"<User user_id={self.user_id} username={self.username}>"
+
+    def to_dict(self):
+        user = {
+            "user_id": self.user_id,
+            "username": self.username,
+        }
+        return user
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
@@ -24,7 +34,6 @@ class User(db.Model):
         return { c.name: getattr(self, c.name) for c in self.__table__.columns }
 
 def connect_to_db(flask_app, db_uri=py_secrets.db_uri, echo=False):
-    # ignoring passed-in db_uri so it works on the server
     flask_app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
     flask_app.config['SQLALCHEMY_ECHO'] = echo
     flask_app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
