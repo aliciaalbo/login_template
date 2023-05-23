@@ -12,14 +12,14 @@ function App() {
   useEffect(() => {
     /* global google */
     google.accounts.id.initialize({
-      client_id: "451475209024-85k465aqaql0jb97467aa7n0flmrjngi.apps.googleusercontent.com"
+      client_id: "451475209024-85k465aqaql0jb97467aa7n0flmrjngi.apps.googleusercontent.com",
       callback: handleCallbackResponse
     })
     }, []);
 
     google.accounts.id.renderButton(
       document.getElementById("signInDiv"),
-      {theme: "outline, size: "large}
+      {theme: "outline", size: "large"}
     )
 
   const [userLoggedIn, setUserLoggedIn] = useState({ userId: null, username: null })
